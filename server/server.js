@@ -22,4 +22,3 @@ connection.once("open", () => {
 app.listen(port, () => {
   console.log(`Server is up and listening on port ${port}`);
 });
-
