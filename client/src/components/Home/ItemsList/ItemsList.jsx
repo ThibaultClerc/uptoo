@@ -6,15 +6,14 @@ import itemFinder from '../../../api/itemFinder';
 import { useHistory } from 'react-router-dom';
 
 
-const ItemsList = () => {
-  const [items, setItems] = useState([]);
+const ItemsList = ({items, deleteHandler}) => {
   let history = useHistory();
 
   const columns = [
     {
       title: 'Title',
       dataIndex: 'title',
-      key: 'title',
+      key: '_id',
       ellipsis: true
     },
     {
@@ -49,29 +48,16 @@ const ItemsList = () => {
     {
       title: 'Delete',
       key: 'delete',
-      render: () => (
+      render: (item) => (
         <Button
           danger
           shape="circle"
           icon={<DeleteOutlined style={{color: "red"}}/>}
+          onClick={(e) => handleDelete(e, item._id)}
         />
       ),
     },
   ];
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await itemFinder.get("/");
-        console.log(response.data)
-        setItems(response.data)
-        console.log()
-      } catch (err) {
-        console.log(err)
-      }
-    }
-    fetchData();
-  }, [])
 
   const handleUpdate = (e, id) => {
     e.stopPropagation();
@@ -82,12 +68,12 @@ const ItemsList = () => {
     e.stopPropagation();
     try {
       await itemFinder.delete(`/${id}`);
-      setItems(items.filter(item => item._id !== id))
+      const newItemsArray = items.filter(item => item._id !== id)
+      deleteHandler(newItemsArray)
     } catch (err) {
       console.log(err)
     }
   }
-
 
   return (
     <Row justify="center">
@@ -95,6 +81,7 @@ const ItemsList = () => {
         <Table
           columns={columns}
           dataSource={items}
+          rowKey={items._id}
         />
       }
     </Row>
