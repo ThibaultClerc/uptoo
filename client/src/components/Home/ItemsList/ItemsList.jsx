@@ -1,14 +1,14 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Row, Button } from 'antd';
-import { Table, Space } from 'antd';
+import { Table } from 'antd';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-
+import itemFinder from '../../../api/itemFinder';
 
 const columns = [
   {
-    title: 'Name',
-    dataIndex: 'name',
-    key: 'name',
+    title: 'Title',
+    dataIndex: 'title',
+    key: 'title',
     ellipsis: true,
     render: text => <a>{text}</a>,
   },
@@ -20,14 +20,14 @@ const columns = [
   },
   {
     title: 'Key',
-    dataIndex: 'key',
+    dataIndex: ["data", "0", "key"],
     key: 'key',
     ellipsis: true
   },
   {
     title: 'Value',
-    key: 'value',
-    dataIndex: 'value',
+    key: 'data[0].key',
+    dataIndex: ["data", "0", "value"],
     ellipsis: true
   },
   {
@@ -53,34 +53,25 @@ const columns = [
   },
 ];
 
-const data = [
-  {
-    key: '1',
-    name: 'John Brown',
-    age: 32,
-    address: 'New York No. 1 Lake Park',
-    tags: ['nice', 'developer'],
-  },
-  {
-    key: '2',
-    name: 'Jim Green',
-    age: 42,
-    address: 'London No. 1 Lake Park',
-    tags: ['loser'],
-  },
-  {
-    key: '3',
-    name: 'Joe Black',
-    age: 32,
-    address: 'Sidney No. 1 Lake Park',
-    tags: ['cool', 'teacher'],
-  },
-];
-
 const ItemsList = () => {
+  const [items, setItems] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await itemFinder.get("/");
+        console.log(response.data)
+        setItems(response.data)
+      } catch (err) {
+        console.log(err)
+      }
+    }
+    fetchData();
+  }, [])
+
   return (
     <Row justify="center">
-      <Table columns={columns} dataSource={data} />
+      {items && <Table columns={columns} dataSource={items} />}
     </Row>
   )
 }
