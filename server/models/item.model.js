@@ -7,7 +7,6 @@ const itemSchema = new Schema({
   description: String,
   data: [
     {
-      _id: false,
       key: String,
       value: String,
     },
