@@ -2,6 +2,7 @@ import React from 'react';
 import { Form, Input, Modal, Button, Space, Typography } from 'antd';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 const { Title } = Typography;
+const { TextArea } = Input;
 
 const AddItem = ({visible, onCreate, onCancel}) => {
   const [form] = Form.useForm();
@@ -42,9 +43,8 @@ const AddItem = ({visible, onCreate, onCancel}) => {
           name="description"
           rules={[{ required: true, message: 'Rentrez la description de votre item' }]}
         >
-          <Input/>
+          <TextArea rows={4} />
         </Form.Item>
-        <Title level={3}></Title>
         <Form.List name="data">
           {(fields, { add, remove }) => (
             <>
