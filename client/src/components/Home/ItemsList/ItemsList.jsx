@@ -1,19 +1,19 @@
-import React, { useState, useEffect } from 'react'
-import { Row, Button } from 'antd';
-import { Table } from 'antd';
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import React, { useState } from 'react'
+import { Row, Button, Table, Popconfirm } from 'antd';
+import { DeleteOutlined } from '@ant-design/icons';
 import itemFinder from '../../../api/itemFinder';
-import { useHistory } from 'react-router-dom';
+import ItemModal from './ItemModal/ItemModal';
+import './index.css'
 
-
-const ItemsList = ({items, deleteHandler}) => {
-  let history = useHistory();
+const ItemsList = ({items, deleteHandler, itemUpdated}) => {
+  const [visible, setVisible] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
 
   const columns = [
     {
-      title: 'Title',
+      title: 'Titre',
       dataIndex: 'title',
-      key: '_id',
+      key: 'title',
       ellipsis: true
     },
     {
@@ -23,46 +23,30 @@ const ItemsList = ({items, deleteHandler}) => {
       ellipsis: true
     },
     {
-      title: 'Key',
-      dataIndex: ["data", "0", "key"],
-      key: 'key',
-      ellipsis: true
-    },
-    {
-      title: 'Value',
-      dataIndex: ["data", "0", "value"],
-      key: 'value',
-      ellipsis: true
-    },
-    {
-      title: 'Update',
-      key: 'update',
-      render: (item) => (
-        <Button
-          shape="circle"
-          icon={<EditOutlined style={{color: "orange"}}/>}
-          onClick={(e) => handleUpdate(e, item._id)}
-        />
-      ),
-    },
-    {
-      title: 'Delete',
+      title: "Action",
       key: 'delete',
       render: (item) => (
-        <Button
-          danger
-          shape="circle"
-          icon={<DeleteOutlined style={{color: "red"}}/>}
-          onClick={(e) => handleDelete(e, item._id)}
-        />
+        <>
+        <Popconfirm
+          placement="top"
+          title="Etes-vous certain de vouloir supprimer cet item ?"
+          onConfirm={(e) => handleDelete(e, item._id)}
+          onCancel={(e) => e.stopPropagation()}
+          okText="Oui"
+          cancelText="Non"
+        >
+          <Button
+            danger
+            shape="circle"
+            style={{margin: "auto", display: "block"}}
+            icon={<DeleteOutlined style={{color: "red"}}/>}
+            onClick={e => e.stopPropagation()}
+          />
+        </Popconfirm>
+        </>
       ),
     },
   ];
-
-  const handleUpdate = (e, id) => {
-    e.stopPropagation();
-    history.push(`items/${id}/update`)
-  }
 
   const handleDelete = async (e, id) => {
     e.stopPropagation();
@@ -75,17 +59,39 @@ const ItemsList = ({items, deleteHandler}) => {
     }
   }
 
+  const handleRowClick = (row) => {
+    setVisible(true)
+    setSelectedItem(row)
+  }
+  
   return (
     <Row justify="center">
       {items &&
         <Table
           columns={columns}
           dataSource={items}
-          rowKey={items._id}
+          pagination={false}
+          onRow={(r) => ({
+            onClick: () => { handleRowClick(r) }
+          })}
+          style={{width: "50vw"}}
+          rowKey={record => record._id}
+          className="myTable"
+        />
+      }
+      {visible &&
+        <ItemModal 
+          visible={true}
+          onCancel={(e) => {
+            e.stopPropagation();
+            setVisible(false);
+            itemUpdated(true);
+          }}
+          item={selectedItem}
         />
       }
     </Row>
   )
 }
 
-export default ItemsList
+export default ItemsList;
