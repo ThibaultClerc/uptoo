@@ -1,12 +1,14 @@
 import React from 'react';
-import { Form, Input, Modal } from 'antd';
+import { Form, Input, Modal, Button, Space, Typography } from 'antd';
+import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
+const { Title } = Typography;
 
 const AddItem = ({visible, onCreate, onCancel}) => {
   const [form] = Form.useForm();
 
   return (
     <Modal
-      title="Add a new item"
+      title="Ajouter un nouvel item"
       visible={visible}
       okText="Créer"
       cancelText="Annuler"
@@ -29,7 +31,7 @@ const AddItem = ({visible, onCreate, onCancel}) => {
         name="basic"
       >
         <Form.Item
-          label="Title"
+          label="Titre"
           name="title"
           rules={[{ required: true, message: 'Rentrez le titre du nouvel item' }]}
         >
@@ -42,23 +44,42 @@ const AddItem = ({visible, onCreate, onCancel}) => {
         >
           <Input/>
         </Form.Item>
-        <Form.Item
-          label="Key"
-          name="key"
-          rules={[{ required: true, message: 'Rentrez la key de votre item' }]}
-        >
-          <Input/>
-        </Form.Item>
-        <Form.Item
-          label="Value"
-          name="value"
-          rules={[{ required: true, message: 'Rentrez la value de votre item' }]}
-        >
-          <Input/>
-        </Form.Item>
+        <Title level={3}></Title>
+        <Form.List name="data">
+          {(fields, { add, remove }) => (
+            <>
+              {fields.map(field => (
+                <Space key={field.key} style={{ display: 'flex', marginBottom: 8 }} align="baseline">
+                  <Form.Item
+                    {...field}
+                    name={[field.name, 'key']}
+                    fieldKey={[field.fieldKey, 'key']}
+                    rules={[{ required: true, message: 'Rentrez la clé de votre donnée' }]}
+                  >
+                    <Input placeholder="Clé" />
+                  </Form.Item>
+                  <Form.Item
+                    {...field}
+                    name={[field.name, 'value']}
+                    fieldKey={[field.fieldKey, 'value']}
+                    rules={[{ required: true, message: 'Rentrez la valeur de votre donnée' }]}
+                  >
+                    <Input placeholder="Valeur" />
+                  </Form.Item>
+                  <MinusCircleOutlined onClick={() => remove(field.name)} />
+                </Space>
+              ))}
+              <Form.Item>
+                <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
+                  Ajouter des données
+                </Button>
+              </Form.Item>
+            </>
+          )}
+        </Form.List>
       </Form>
     </Modal>
   )
 }
 
-export default AddItem
+export default AddItem;
