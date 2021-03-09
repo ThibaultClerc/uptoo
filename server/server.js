@@ -3,6 +3,7 @@ const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const itemsRouter = require('./routes/items');
+const path = require('path');
 
 const app = express();
 const port = process.env.PORT || 8000;
@@ -17,6 +18,11 @@ mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true, useFind
 const connection = mongoose.connection;
 connection.once("open", () => {
   console.log("Connected to the remote MongoDB database named Uptoo");
+});
+
+app.use(express.static(path.join(__dirname, 'build')));
+app.get('/*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
 app.listen(port, () => {

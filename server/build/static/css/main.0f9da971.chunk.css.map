@@ -1,0 +1,1 @@
+{"version":3,"sources":["webpack://src/components/Home/ItemsList/index.css"],"names":[],"mappings":"AAAA,yBACE,iBACF","file":"main.0f9da971.chunk.css","sourcesContent":[".myTable .ant-table-cell {\n  text-align: center;\n}"]}
