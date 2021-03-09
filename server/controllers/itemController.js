@@ -1,19 +1,18 @@
-const router = require('express').Router();
-let Item = require('../models/item.model');
+const Item = require('../models/item');
 
-router.route('/').get((req, res) => {
+const item_index = (req, res) => {
   Item.find()
   .then(items => res.json(items))
   .catch(err => res.status(400).json(`Error: ${err}`));
-});
+};
 
-router.route('/:id').get((req, res) => {
+const item_show = (req, res) => {
   Item.findById(req.params.id)
   .then(item => res.json(item))
   .catch(err => res.status(400).json(`Error: ${err}`));
-});
+};
 
-router.route('/').post((req, res) => {
+const item_create = (req, res) => {
   const item = req.body;
   const newItem = new Item({
     title: item.title,
@@ -23,9 +22,9 @@ router.route('/').post((req, res) => {
   newItem.save()
     .then(() => res.status(200).json(newItem))
     .catch(err => res.status(400).json(`Error: ${err}`));
-})
+};
 
-router.route('/:id').put((req, res) => {
+const item_update = (req, res) => {
   const updatedItem = req.body;
   Item.findOneAndUpdate({_id: req.params.id}, updatedItem, {new: true}, (err, data) => {
     if (err) {
@@ -34,9 +33,9 @@ router.route('/:id').put((req, res) => {
       res.status(200).json(data);
     };
   });
-});
+};
 
-router.route('/:id').delete((req, res) => {
+const item_delete = (req, res) => {
   Item.findOneAndDelete({_id: req.params.id}, (err, data) => {
     if (err) {
       res.status(400).json(`Error: ${err}`);
@@ -44,6 +43,12 @@ router.route('/:id').delete((req, res) => {
       res.status(200).json(`Item with id ${data.id} deleted !`);
     };
   });
-});
+};
 
-module.exports = router;
+module.exports = {
+  item_index,
+  item_show,
+  item_create,
+  item_update,
+  item_delete
+};
