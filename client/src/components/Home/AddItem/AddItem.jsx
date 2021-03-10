@@ -1,10 +1,12 @@
 import React from 'react';
-import { Form, Input, Modal, Button, Space, Typography } from 'antd';
+import {
+  Form, Input, Modal, Button, Space,
+} from 'antd';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
-const { Title } = Typography;
+
 const { TextArea } = Input;
 
-const AddItem = ({visible, onCreate, onCancel}) => {
+const AddItem = ({ visible, onCreate, onCancel }) => {
   const [form] = Form.useForm();
 
   return (
@@ -36,7 +38,7 @@ const AddItem = ({visible, onCreate, onCancel}) => {
           name="title"
           rules={[{ required: true, message: 'Rentrez le titre du nouvel item' }]}
         >
-          <Input/>
+          <Input />
         </Form.Item>
         <Form.Item
           label="Description"
@@ -48,7 +50,7 @@ const AddItem = ({visible, onCreate, onCancel}) => {
         <Form.List name="data">
           {(fields, { add, remove }) => (
             <>
-              {fields.map(field => (
+              {fields.map((field) => (
                 <Space key={field.key} style={{ display: 'flex', marginBottom: 8 }} align="baseline">
                   <Form.Item
                     {...field}
@@ -79,7 +81,7 @@ const AddItem = ({visible, onCreate, onCancel}) => {
         </Form.List>
       </Form>
     </Modal>
-  )
-}
+  );
+};
 
 export default AddItem;

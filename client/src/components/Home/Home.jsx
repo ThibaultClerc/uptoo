@@ -1,32 +1,33 @@
 import React, { useState, useEffect } from 'react';
+import { Layout, Button } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
 import Header from './Header/Header';
 import ItemsList from './ItemsList/ItemsList';
 import AddItem from './AddItem/AddItem';
-import { Layout, Button } from 'antd';
 import itemFinder from '../../api/itemFinder';
-import { PlusOutlined } from '@ant-design/icons';
+
 const { Footer } = Layout;
 
 const Home = () => {
   const [visible, setVisible] = useState(false);
   const [items, setItems] = useState([]);
-  const [itemUpdated, setItemUpdated] = useState(false)
+  const [itemUpdated, setItemUpdated] = useState(false);
 
   const fetchData = async () => {
     try {
-      const response = await itemFinder.get("/");
-      setItems(response.data)
+      const response = await itemFinder.get('/');
+      setItems(response.data);
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
-  }
+  };
 
   const onCreate = async (values) => {
-    console.log(values)
+    console.log(values);
     await itemFinder.post('/', {
       title: values.title,
       description: values.description,
-      data: values.data
+      data: values.data,
     });
     setVisible(false);
     fetchData();
@@ -35,22 +36,24 @@ const Home = () => {
   useEffect(() => {
     if (itemUpdated) {
       fetchData();
-      setItemUpdated(false)
+      setItemUpdated(false);
     }
-  }, [itemUpdated])
+  }, [itemUpdated]);
 
   useEffect(() => {
     fetchData();
-  }, [])
+  }, []);
 
   return (
     <>
-    {items && 
+      {items
+      && (
       <Layout style={{
         padding: '8vw 10vw',
-        height: "100vh"
-      }}>
-        <Header/>
+        height: '100vh',
+      }}
+      >
+        <Header />
         <Button
           shape="round"
           type="primary"
@@ -58,13 +61,13 @@ const Home = () => {
           onClick={() => setVisible(true)}
           icon={<PlusOutlined />}
           style={{
-            width: "fit-content",
-            margin: "40px auto"
+            width: 'fit-content',
+            margin: '40px auto',
           }}
-          >
+        >
           Ajouter un Item
         </Button>
-        <AddItem 
+        <AddItem
           visible={visible}
           onCreate={onCreate}
           onCancel={() => {
@@ -78,16 +81,16 @@ const Home = () => {
         />
         <Footer style={{
           textAlign: 'center',
-          position: "sticky",
-          bottom: "0"
+          position: 'sticky',
+          bottom: '0',
         }}
         >
           Test Technique Uptoo
         </Footer>
       </Layout>
-    }
+      )}
     </>
-  )
-}
+  );
+};
 
 export default Home;
