@@ -5,7 +5,14 @@ const { Title } = Typography;
 
 const Header = () => (
   <Row justify="center">
-    <Title style={{ fontSize: 'xxx-large' }}>Items Collection</Title>
+    <Title
+      style={{
+        fontSize: '6em',
+        color: 'lightslategray',
+      }}
+    >
+      Items Collection
+    </Title>
   </Row>
 );
 

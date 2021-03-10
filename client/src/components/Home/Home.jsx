@@ -49,8 +49,9 @@ const Home = () => {
       {items
       && (
       <Layout style={{
-        padding: '8vw 10vw',
+        padding: '5vw 10vw 0',
         height: '100vh',
+        minHeight: 'calc(100vh - 70px)',
       }}
       >
         <Header />
@@ -62,7 +63,7 @@ const Home = () => {
           icon={<PlusOutlined />}
           style={{
             width: 'fit-content',
-            margin: '40px auto',
+            margin: '10px auto 50px',
           }}
         >
           Ajouter un Item
@@ -81,8 +82,9 @@ const Home = () => {
         />
         <Footer style={{
           textAlign: 'center',
-          position: 'sticky',
-          bottom: '0',
+          padding: '3vw',
+          color: 'lightslategray',
+          height: '50px',
         }}
         >
           Test Technique Uptoo
