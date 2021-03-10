@@ -113,10 +113,13 @@ const ItemModal = ({ item, visible, onCancel }) => {
                 }}
               />
             </Popconfirm>
-            <Card>
+            <Card style={{ width: 'inherit' }}>
               <Title level={5}>Clé:</Title>
               <Paragraph
-                editable={{ onChange: (newKeyValue) => handleDataKeyChange(newKeyValue, data._id) }}
+                editable={{
+                  onChange: (newKeyValue) => handleDataKeyChange(newKeyValue, data._id),
+                }}
+                ellipsis
               >
                 {data.key}
               </Paragraph>
@@ -126,6 +129,7 @@ const ItemModal = ({ item, visible, onCancel }) => {
                 editable={{
                   onChange: (newValue) => handleDataValueChange(newValue, data._id),
                 }}
+                ellipsis
               >
                 {data.value}
               </Paragraph>

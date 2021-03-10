@@ -73,13 +73,13 @@ const ItemsList = ({ items, deleteHandler, itemUpdated }) => {
         <Table
           columns={columns}
           dataSource={items}
-          pagination={false}
           onRow={(r) => ({
             onClick: () => { handleRowClick(r); },
           })}
           style={{ width: '50vw' }}
           rowKey={(record) => record._id}
           className="myTable"
+          pagination={{ pageSize: 5 }}
         />
         )}
       {visible
